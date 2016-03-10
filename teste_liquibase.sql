@@ -16,21 +16,44 @@ insert into test1 (id, name) values (2, 'name 2');
 
 --changeset evandroamparo:7018
 insert into test1 (id, name) values (3, 'name 3');
-
---changeset evandroamparo:6845
 insert into test1 (id, name) values (4, 'name 4');
 
---changeset evandroamparo:proc endDelimiter:^ splitStatements:false
+--changeset evandroamparo:proc splitStatements:false
 CREATE OR ALTER PROCEDURE PROCTESTE (
-    INACAO integer,
-    INCODIGOPRODUTOR type of CODIGOS)
+    in_id integer)
 as
 BEGIN
-   IF (:INACAO = 3) THEN BEGIN
-      DELETE FROM TABNOVOSSOCIOS
-      WHERE CODIGOPRODUTOR = :INCODIGOPRODUTOR;
-   END
+  DELETE FROM test1
+  WHERE id = :in_id;
 END;
 
-CREATE VIEW VTESTE(ID, VALOR)
-AS SELECT CODIGONOTAFISCAL, VALOR, FROM TABNOTASFISCAIS;
+--rollback drop procedure PROCTESTE;
+
+--changeset evandroamparo:view
+create view vteste (codigo, nome)
+  as select id, name from test1;
+
+--rollback drop view vteste;
+
+--changeset evandroamparo:seq
+create sequence seqtest1;
+
+--rollback drop SEQUENCE seqtest1;
+
+--changeset evandroamparo:seq2
+ALTER SEQUENCE SEQTEST1 RESTART WITH 10;
+
+--changeset evandroamparo:trigger splitStatements:false
+create trigger TEST1_BI for TEST1
+active before insert position 0
+as
+begin
+  if (new.ID is null) then
+    new.ID = gen_id(SEQTEST1,1);
+end;
+
+--rollback drop trigger TEST1_BI;
+
+--changeset evandroamparo:insert
+insert into TEST1 (NAME) values ('João');
+insert into TEST1 (NAME) values ('José');

@@ -1,0 +1,1 @@
+@call liquibase.bat update 
