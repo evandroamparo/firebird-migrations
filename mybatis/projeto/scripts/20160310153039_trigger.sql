@@ -7,10 +7,10 @@ as
 begin
   if (new.ID is null) then
     new.ID = gen_id(GEN_TABCONFIGURACOES_ID,1);
-end;
+end^
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 
 
-drop trigger TABCONFIGURACOES_BI;
+drop trigger TABCONFIGURACOES_BI^

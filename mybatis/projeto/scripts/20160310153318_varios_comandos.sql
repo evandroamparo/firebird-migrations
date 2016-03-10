@@ -2,9 +2,7 @@
 -- Migration SQL that makes the change goes here.
 
 create view vconfiguracoes (nome)
-  as select nome from tabconfiguracoes 
-
-^
+  as select nome from tabconfiguracoes^
 
 CREATE OR ALTER trigger TABCONFIGURACOES_BI for TABCONFIGURACOES
 active before insert position 0
@@ -21,4 +19,6 @@ end^
 -- //@UNDO
 -- SQL to undo the change goes here.
 
+drop trigger TABCONFIGURACOES_BI^
 
+drop view vconfiguracoes^

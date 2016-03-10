@@ -36,4 +36,4 @@
 
 create table tabconfiguracoes (
   id integer,
-  nome varchar(50));
+  nome varchar(50))^
